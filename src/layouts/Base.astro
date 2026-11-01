@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { contact, profile } from '../data/profile';
+import { mailtoHref } from '../lib/contact';
 
 interface Props {
   title: string;
@@ -13,11 +15,12 @@ const ogImage = new URL('/og.png', Astro.site);
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Shailendra',
+  name: profile.name,
   url: Astro.site?.toString(),
-  email: 'mailto:shailendra.matat@gmail.com',
-  telephone: '+977-9843679155',
+  email: mailtoHref(contact.email),
+  telephone: contact.phone,
   jobTitle: 'Front-end Developer',
+  description: profile.headline,
 };
 ---
 

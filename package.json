@@ -8,7 +8,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:content": "tsx scripts/check-content.mjs",
+    "build:prod": "npm run check:content && astro build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
