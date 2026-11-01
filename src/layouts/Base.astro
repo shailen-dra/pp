@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { contact, profile } from '../data/profile';
 import { mailtoHref } from '../lib/contact';
+import Header from '../components/Header.astro';
 
 interface Props {
   title: string;
@@ -47,6 +48,16 @@ const personJsonLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <script is:inline>
+      (() => {
+        let theme = null;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch {}
+        const dark = theme ? theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
   </head>
   <body class="min-h-screen">
@@ -56,6 +67,7 @@ const personJsonLd = {
     >
       Skip to content
     </a>
+    <Header />
     <main id="main">
       <slot />
     </main>

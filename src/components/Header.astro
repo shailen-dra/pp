@@ -1,0 +1,99 @@
+---
+import { profile } from '../data/profile';
+import ThemeToggle from './ThemeToggle.astro';
+
+const links = [
+  { href: '#about', label: 'About' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#journey', label: 'Journey' },
+  { href: '#contact', label: 'Contact', cta: true },
+];
+---
+
+<header
+  id="top"
+  data-testid="site-header"
+  class="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur supports-[backdrop-filter]:bg-bg/70"
+>
+  <div class="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
+    <a href="#top" class="truncate text-base font-semibold tracking-tight text-fg">{profile.name}</a>
+
+    <div class="flex items-center gap-1">
+      <nav aria-label="Main" data-testid="desktop-nav" class="hidden items-center gap-1 md:flex">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              data-variant={link.cta ? 'cta' : undefined}
+              class={
+                link.cta
+                  ? 'ml-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90'
+                  : 'rounded-md px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-fg'
+              }
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <ThemeToggle />
+
+      <button
+        type="button"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Open menu"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted hover:bg-card hover:text-fg md:hidden"
+      >
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" aria-label="Mobile" hidden class="border-t border-border bg-bg md:hidden">
+    <ul class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              data-variant={link.cta ? 'cta' : undefined}
+              class={
+                link.cta
+                  ? 'block rounded-md bg-accent px-3 py-3 text-center font-medium text-accent-fg'
+                  : 'block rounded-md px-3 py-3 font-medium text-fg hover:bg-card'
+              }
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('button[aria-controls="mobile-menu"]');
+  const menu = document.getElementById('mobile-menu');
+
+  if (button && menu) {
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+
+    button.addEventListener('click', () => setOpen(menu.hidden));
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+  }
+</script>

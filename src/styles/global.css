@@ -47,3 +47,18 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Keep anchored section headings clear of the sticky header. */
+[id] {
+  scroll-margin-top: 5rem;
+}
