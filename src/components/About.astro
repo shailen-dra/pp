@@ -1,0 +1,14 @@
+---
+import { profile } from '../data/profile';
+---
+
+<section id="about" aria-labelledby="about-heading" class="border-t border-border">
+  <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24">
+    <p class="text-sm font-semibold tracking-wider text-accent uppercase">About</p>
+    <h2 id="about-heading" class="mt-2 max-w-2xl text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+      Fast, reliable websites that turn visitors into customers.
+    </h2>
+    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">{profile.bio}</p>
+    <p class="mt-6 max-w-2xl border-l-2 border-accent pl-4 text-base text-fg">{profile.offTheClock}</p>
+  </div>
+</section>
