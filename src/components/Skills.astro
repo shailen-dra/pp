@@ -5,7 +5,7 @@ import { experienceLabel, skillGroups } from '../data/profile';
 <section id="skills" aria-labelledby="skills-heading" class="border-t border-border">
   <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24">
     <p class="text-sm font-semibold tracking-wider text-accent uppercase">Skills</p>
-    <h2 id="skills-heading" class="mt-2 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+    <h2 id="skills-heading" data-reveal class="mt-2 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
       <span class="block text-5xl text-accent sm:text-6xl">{experienceLabel}</span>
       <span class="mt-2 block">of building for the web.</span>
     </h2>
@@ -13,7 +13,7 @@ import { experienceLabel, skillGroups } from '../data/profile';
     <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         skillGroups.map((group) => (
-          <li data-testid="skill-card" class="rounded-xl border border-border bg-card p-6">
+          <li data-testid="skill-card" data-reveal class="rounded-xl border border-border bg-card p-6">
             <h3 class="text-lg font-semibold text-fg">{group.title}</h3>
             <ul class="mt-3 space-y-1.5 text-muted">
               {group.items.map((item) => (

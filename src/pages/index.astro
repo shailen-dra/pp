@@ -5,6 +5,7 @@ import About from '../components/About.astro';
 import Skills from '../components/Skills.astro';
 import Journey from '../components/Journey.astro';
 import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Base
@@ -16,4 +17,9 @@ import Contact from '../components/Contact.astro';
   <Skills />
   <Journey />
   <Contact />
+  <Footer slot="footer" />
 </Base>
+
+<script>
+  import '../scripts/reveal';
+</script>

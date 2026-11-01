@@ -50,6 +50,7 @@ const personJsonLd = {
 
     <script is:inline>
       (() => {
+        document.documentElement.classList.add('js');
         let theme = null;
         try {
           theme = localStorage.getItem('theme');
@@ -71,5 +72,6 @@ const personJsonLd = {
     <main id="main">
       <slot />
     </main>
+    <slot name="footer" />
   </body>
 </html>

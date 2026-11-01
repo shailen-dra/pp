@@ -62,3 +62,17 @@ html {
 [id] {
   scroll-margin-top: 5rem;
 }
+
+/* Scroll reveal: only hidden when JS runs and the visitor allows motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    transition:
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
+  }
+
+  html.js [data-reveal]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
