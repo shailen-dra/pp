@@ -53,7 +53,7 @@ const links = [
     </div>
   </div>
 
-  <nav id="mobile-menu" aria-label="Mobile" hidden class="border-t border-border bg-bg md:hidden">
+  <nav id="mobile-menu" aria-label="Mobile" class="border-t border-border bg-bg md:hidden">
     <ul class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3">
       {
         links.map((link) => (
@@ -82,15 +82,15 @@ const links = [
 
   if (button && menu) {
     const setOpen = (open: boolean) => {
-      menu.hidden = !open;
+      menu.classList.toggle('is-open', open);
       button.setAttribute('aria-expanded', String(open));
       button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     };
 
-    button.addEventListener('click', () => setOpen(menu.hidden));
+    button.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
     menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !menu.hidden) {
+      if (event.key === 'Escape' && menu.classList.contains('is-open')) {
         setOpen(false);
         button.focus();
       }

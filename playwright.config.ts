@@ -1,12 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
+import { BASE_URL, PORT } from './tests/e2e/base-url';
 
 export default defineConfig({
   testDir: 'tests/e2e',
-  use: { baseURL: 'http://localhost:4321' },
+  use: { baseURL: BASE_URL },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm run preview -- --port 4321',
-    url: 'http://localhost:4321',
+    command: `npm run preview -- --port ${PORT}`,
+    url: BASE_URL,
     reuseExistingServer: !process.env.CI,
   },
 });

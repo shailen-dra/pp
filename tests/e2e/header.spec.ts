@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { BASE_URL } from './base-url';
 
 test.describe('desktop', () => {
   test.use({ viewport: { width: 1280, height: 800 } });
@@ -48,11 +49,24 @@ test.describe('mobile', () => {
   });
 });
 
+test('phone nav works without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 360, height: 740 } });
+  const page = await context.newPage();
+  await page.goto(`${BASE_URL}/`);
+  await expect(page.locator('button[aria-controls="mobile-menu"]')).toBeHidden();
+  const menu = page.locator('#mobile-menu');
+  await expect(menu).toBeVisible();
+  await menu.getByRole('link', { name: 'Journey' }).click();
+  expect(new URL(page.url()).hash).toBe('#journey');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+  await context.close();
+});
+
 test.describe('theme', () => {
   test('theme follows system', async ({ browser }) => {
     const context = await browser.newContext({ colorScheme: 'dark' });
     const page = await context.newPage();
-    await page.goto('http://localhost:4321/');
+    await page.goto(`${BASE_URL}/`);
     await expect(page.locator('html')).toHaveClass(/\bdark\b/);
     await context.close();
   });
@@ -60,7 +74,7 @@ test.describe('theme', () => {
   test('theme toggle persists without flash', async ({ browser }) => {
     const context = await browser.newContext({ colorScheme: 'light' });
     const page = await context.newPage();
-    await page.goto('http://localhost:4321/');
+    await page.goto(`${BASE_URL}/`);
     await expect(page.locator('html')).not.toHaveClass(/\bdark\b/);
     const toggle = page.locator('button[data-testid="theme-toggle"]');
     await expect(toggle).toHaveAttribute('aria-label', /.+/);

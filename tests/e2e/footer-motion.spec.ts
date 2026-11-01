@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { BASE_URL } from './base-url';
 
 async function revealOpacities(page: Page) {
   const reveals = page.locator('[data-reveal]');
@@ -17,7 +18,7 @@ test('footer has copyright year and back to top', async ({ page }) => {
 test('reduced motion shows content immediately', async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: 'reduce' });
   const page = await context.newPage();
-  await page.goto('http://localhost:4321/');
+  await page.goto(`${BASE_URL}/`);
   for (const opacity of await revealOpacities(page)) expect(opacity).toBe('1');
   await context.close();
 });
@@ -25,7 +26,7 @@ test('reduced motion shows content immediately', async ({ browser }) => {
 test('content visible without JS', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto('http://localhost:4321/');
+  await page.goto(`${BASE_URL}/`);
   for (const opacity of await revealOpacities(page)) expect(opacity).toBe('1');
   await context.close();
 });
@@ -40,7 +41,7 @@ test('sitemap and og image exist', async ({ request }) => {
 test('reveal elements become visible when scrolled into view', async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: 'no-preference' });
   const page = await context.newPage();
-  await page.goto('http://localhost:4321/');
+  await page.goto(`${BASE_URL}/`);
   const heading = page.locator('#contact-heading');
   await expect(heading).not.toHaveClass(/is-visible/);
   await heading.scrollIntoViewIfNeeded();

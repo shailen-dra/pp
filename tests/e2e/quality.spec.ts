@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { BASE_URL } from './base-url';
 import AxeBuilder from '@axe-core/playwright';
 
 for (const colorScheme of ['light', 'dark'] as const) {
   test(`no axe violations (${colorScheme})`, async ({ browser }) => {
     const context = await browser.newContext({ colorScheme, reducedMotion: 'reduce' });
     const page = await context.newPage();
-    await page.goto('http://localhost:4321/');
+    await page.goto(`${BASE_URL}/`);
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(', ')}`)).toEqual([]);
     await context.close();

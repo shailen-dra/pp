@@ -17,12 +17,12 @@ npm run dev                       # http://localhost:4321
 |---|---|
 | `npm run dev` | Start the dev server |
 | `npm run build` | Build to `dist/` |
-| `npm run build:prod` | Fail if any `TBC_` placeholder remains, then build (used by Vercel) |
+| `npm run build:prod` | Fail if any placeholder remains, then build (used by Vercel) |
 | `npm run preview` | Serve the built site |
 | `npm test` | Unit tests (Vitest) |
 | `npm run test:e2e` | End-to-end and accessibility tests (Playwright, against `astro preview`) |
 | `npm run test:all` | Unit tests, build, then e2e tests |
-| `npm run check:content` | List every remaining `TBC_` placeholder |
+| `npm run check:content` | List every remaining placeholder (`TBC_` values, `example.com`, stub CV/photo) |
 | `npm run lhci` | Lighthouse CI on `dist/` (mobile, every category ≥ 95) |
 
 ## Owner setup
@@ -37,7 +37,8 @@ Without a key the form shows a friendly error with the email address instead of 
 
 ### 2. Replace placeholders
 
-Production builds stop while any `TBC_` value remains. List them with:
+Production builds stop while any placeholder remains: a `TBC_` value, the `example.com` site URL,
+or the stub `public/cv.pdf` / `public/photo.jpg`. List them with:
 
 ```sh
 npm run check:content

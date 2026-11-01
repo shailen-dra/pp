@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { BASE_URL } from './base-url';
 
 const ENDPOINT = 'https://api.web3forms.com/submit';
 const EMAIL = 'shailendra.matat@gmail.com';
@@ -119,7 +120,7 @@ test('no-JS submit posts natively', async ({ browser }) => {
     body = route.request().postData() ?? '';
     return route.fulfill({ status: 200, contentType: 'text/html', body: '<p>ok</p>' });
   });
-  await page.goto('http://localhost:4321/');
+  await page.goto(`${BASE_URL}/`);
   await fillForm(page);
   await page.locator('#contact-form button[type="submit"]').click();
   await expect.poll(() => body).toContain('access_key=');

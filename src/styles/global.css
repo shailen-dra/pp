@@ -76,3 +76,16 @@ html {
     transform: translateY(12px);
   }
 }
+
+/* Mobile menu: collapsed behind the button when JS runs; a plain link list without JS. */
+html.js #mobile-menu:not(.is-open) {
+  display: none;
+}
+
+html:not(.js) [aria-controls="mobile-menu"] {
+  display: none;
+}
+
+html:not(.js) [data-testid="site-header"] {
+  position: static;
+}
