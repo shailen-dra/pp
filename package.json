@@ -10,7 +10,9 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "check:content": "tsx scripts/check-content.mjs",
-    "build:prod": "npm run check:content && astro build"
+    "build:prod": "npm run check:content && astro build",
+    "lhci": "lhci autorun",
+    "test:all": "npm test && npm run build && npm run test:e2e"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
