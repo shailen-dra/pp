@@ -1,0 +1,34 @@
+---
+import { journey } from '../data/profile';
+---
+
+<section id="journey" aria-labelledby="journey-heading" class="border-t border-border">
+  <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24">
+    <p class="text-sm font-semibold tracking-wider text-accent uppercase">Journey</p>
+    <h2 id="journey-heading" class="mt-2 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+      Where I have worked and learned.
+    </h2>
+
+    <ol class="relative mt-10 space-y-10 border-l border-border pl-8 sm:ml-4 sm:pl-10">
+      {
+        journey.map((entry, index) => (
+          <li data-testid="journey-item" class="relative">
+            <span
+              class="absolute top-0 -left-[3.05rem] flex h-9 w-9 items-center justify-center rounded-full border border-border bg-bg text-sm font-semibold text-accent sm:-left-[3.6rem]"
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+              <span class="text-muted">{entry.period}</span>
+              <span data-testid="journey-tag" class="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-fg">{entry.tag}</span>
+            </div>
+            <h3 class="mt-2 text-lg font-semibold text-fg">{entry.title}</h3>
+            <p class="text-muted">{entry.org}</p>
+            <p class="mt-2 max-w-2xl text-muted">{entry.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
