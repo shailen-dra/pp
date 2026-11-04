@@ -2,24 +2,65 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --bg: #fafaf9;
-  --fg: #1c1917;
-  --muted: #57534e;
-  --border: #e7e5e4;
-  --accent: #0f766e;
-  --accent-fg: #ffffff;
-  --card: #ffffff;
+/* Bricolage Grotesque, latin subset, weight + width axes (condensed display, normal body). */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  src: url("../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wdth-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-:root.dark {
-  --bg: #0c0a09;
-  --fg: #f5f5f4;
-  --muted: #a8a29e;
-  --border: #292524;
-  --accent: #2dd4bf;
-  --accent-fg: #042f2e;
-  --card: #1c1917;
+/*
+  Two panel surfaces alternate down the page, like the reference:
+  ink (always dark) and paper (light, or a lifted navy in dark mode).
+  Tailwind's bg-bg / text-fg / border-border etc. read these variables,
+  so every component inherits the right colours from its panel.
+*/
+:root,
+.paper {
+  --bg: #dde2ea;
+  --fg: #070b14;
+  --muted: #3c4657;
+  --border: rgb(7 11 20 / 0.14);
+  --accent: #1d4ed8;
+  --accent-fg: #ffffff;
+  --card: #eef1f5;
+  --field: #ffffff;
+}
+
+:root.dark,
+:root.dark .paper {
+  --bg: #111a2e;
+  --fg: #e6eaf0;
+  --muted: #a3afc2;
+  --border: rgb(255 255 255 / 0.12);
+  --accent: #60a5fa;
+  --accent-fg: #070b14;
+  --card: #0b1220;
+  --field: #070b14;
+}
+
+.ink,
+:root.dark .ink {
+  --bg: #070b14;
+  --fg: #eef1f6;
+  --muted: #a3afc2;
+  --border: rgb(255 255 255 / 0.12);
+  --accent: #60a5fa;
+  --accent-fg: #070b14;
+  --card: #0d1424;
+  --field: #141d31;
+}
+
+.ink,
+.paper {
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 @theme inline {
@@ -30,26 +71,18 @@
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-card: var(--card);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-field: var(--field);
+  --font-sans: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
   color-scheme: light;
+  scroll-behavior: smooth;
+  background-color: #070b14;
 }
 
 html.dark {
   color-scheme: dark;
-}
-
-body {
-  background-color: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -58,22 +91,85 @@ html {
   }
 }
 
+body {
+  background-color: #070b14;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* Keep anchored section headings clear of the sticky header. */
 [id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 4.5rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Condensed uppercase display type. */
+.display {
+  font-stretch: 75%;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+}
+
+/* The surname, drawn as an outline in the accent colour. */
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent);
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .outline-text {
+    color: var(--accent);
+  }
+}
+
+/* Stacked panels: each one rides up over the previous with rounded top corners. */
+.stack {
+  position: relative;
+  margin-top: -2rem;
+  border-radius: 2rem 2rem 0 0;
+  box-shadow: 0 -24px 48px -24px rgb(0 0 0 / 0.45);
 }
 
 /* Scroll reveal: only hidden when JS runs and the visitor allows motion. */
 @media (prefers-reduced-motion: no-preference) {
   html.js [data-reveal] {
     transition:
-      opacity 400ms ease-out,
-      transform 400ms ease-out;
+      opacity 600ms ease-out,
+      transform 600ms ease-out;
   }
 
   html.js [data-reveal]:not(.is-visible) {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
+  }
+
+  /* Hero: the name rises in once on load. */
+  .hero-rise {
+    animation: rise 900ms 100ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .hero-rise-late {
+    animation: rise 900ms 300ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.25em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 

@@ -1,49 +1,54 @@
 ---
 import { Image } from 'astro:assets';
 import { profile } from '../data/profile';
+
+const [firstName, ...rest] = profile.name.split(/\s+/);
+const surname = rest.join(' ');
 ---
 
-<section data-testid="hero" aria-labelledby="hero-heading" class="mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24">
-  <div class="grid items-center gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-14">
-    <Image
-      src={profile.photo}
-      alt={`Portrait of ${profile.name}`}
-      width={800}
-      height={800}
-      loading="eager"
-      fetchpriority="high"
-      class="mx-auto aspect-square w-56 rounded-2xl border border-border object-cover sm:w-64 md:w-full"
-    />
+<section data-testid="hero" aria-labelledby="hero-heading" class="ink relative overflow-hidden pb-24 md:pb-32">
+  <div class="relative mx-auto max-w-7xl px-4 pt-10 sm:px-6 md:pt-14 lg:px-10">
+    <div
+      class="pointer-events-none absolute top-[8%] right-[2%] hidden aspect-square w-[42%] rounded-full bg-[radial-gradient(closest-side,rgb(96_165_250/0.28),transparent)] md:block"
+      aria-hidden="true"
+    >
+    </div>
+    <h1 id="hero-heading" class="display relative z-0 text-[clamp(4rem,17vw,15rem)] break-words">
+      <span class="hero-rise block text-fg">{firstName}</span>
+      {surname && <span class="hero-rise-late outline-text block md:pl-[18%]">{surname}</span>}
+    </h1>
 
-    <div>
-      <h1 id="hero-heading" class="text-4xl font-bold tracking-tight text-fg sm:text-5xl">{profile.name}</h1>
+    <div class="mt-10 md:mt-12">
+      <div class="max-w-xl md:max-w-[58%] lg:max-w-xl">
+        <ul data-testid="hero-roles" class="display space-y-1 text-[1.6rem] leading-tight md:text-3xl">
+          {profile.roles.map((role, i) => <li class={i === 1 ? 'text-accent' : 'text-fg'}>{role}</li>)}
+        </ul>
+        <p class="mt-6 text-lg leading-relaxed text-muted">{profile.headline}</p>
 
-      <ul data-testid="hero-roles" class="mt-5 space-y-2 text-base text-muted sm:text-lg">
-        {
-          profile.roles.map((role) => (
-            <li class="flex items-center gap-3">
-              <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-              {role}
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-fg">{profile.headline}</p>
-
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a
-          href="#contact"
-          data-testid="cta-contact"
-          class="inline-flex items-center rounded-md bg-accent px-5 py-3 font-medium text-accent-fg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >Get in touch</a>
-        <a
-          href={profile.cvUrl}
-          download
-          data-testid="cta-cv"
-          class="inline-flex items-center rounded-md border border-border px-5 py-3 font-medium text-fg transition-colors hover:bg-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >Download CV</a>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href="#contact"
+            data-testid="cta-contact"
+            class="inline-flex items-center rounded-full bg-accent px-7 py-3.5 font-semibold text-accent-fg transition-transform hover:-translate-y-0.5"
+          >Get in touch</a>
+          <a
+            href={profile.cvUrl}
+            download
+            data-testid="cta-cv"
+            class="inline-flex items-center rounded-full border border-fg/30 px-7 py-3.5 font-semibold text-fg transition-colors hover:border-fg"
+          >Download CV</a>
+        </div>
       </div>
+
+      <Image
+        src={profile.photo}
+        alt={`Portrait of ${profile.name}`}
+        width={800}
+        height={800}
+        loading="eager"
+        fetchpriority="high"
+        class="relative z-10 mt-12 aspect-[4/5] w-56 rounded-3xl object-cover shadow-2xl shadow-black/60 sm:w-64 md:absolute md:top-[clamp(6rem,11vw,10rem)] md:right-[7%] md:mt-0 md:w-[26%] md:max-w-[21rem]"
+      />
     </div>
   </div>
 </section>

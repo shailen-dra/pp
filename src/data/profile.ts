@@ -3,7 +3,7 @@ export const profile: {
   headline: string;
   roles: [string, string, string];
   bio: string;
-  offTheClock: string;
+  interests: string[];
   photo: string;
   cvUrl: string;
 } = {
@@ -16,7 +16,7 @@ export const profile: {
     'Full-stack development with AI',
   ],
   bio: 'I have spent more than a decade turning designs into fast, accessible websites, starting with hand-coded front-ends and growing into Shopify and WordPress e-commerce. Today I build store integrations that lift conversion rates, and I use AI-assisted development to ship full-stack applications in less time without cutting corners on quality.',
-  offTheClock: 'Off the clock, you will find me listening to music or following sports.',
+  interests: ['Music', 'Sports'],
   photo: '/photo.jpg',
   cvUrl: '/cv.pdf',
 };

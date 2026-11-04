@@ -8,9 +8,13 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://example.com',
 
+  devToolbar: {
+    enabled: false
+  },
+
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [sitemap()]
+  integrations: [sitemap({ filter: (page) => !page.includes('/thanks') })]
 });

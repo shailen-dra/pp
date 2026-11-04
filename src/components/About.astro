@@ -2,13 +2,25 @@
 import { profile } from '../data/profile';
 ---
 
-<section id="about" aria-labelledby="about-heading" class="border-t border-border">
-  <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24">
-    <p class="text-sm font-semibold tracking-wider text-accent uppercase">About</p>
-    <h2 id="about-heading" data-reveal class="mt-2 max-w-2xl text-3xl font-bold tracking-tight text-fg sm:text-4xl">
-      Fast, reliable websites that turn visitors into customers.
+<section id="about" aria-labelledby="about-heading" class="paper stack z-10">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:py-32 lg:px-10">
+    <h2 id="about-heading" data-reveal class="display text-[clamp(3rem,7vw,5.5rem)]">
+      Turning designs into stores that sell.
     </h2>
-    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">{profile.bio}</p>
-    <p class="mt-6 max-w-2xl border-l-2 border-accent pl-4 text-base text-fg">{profile.offTheClock}</p>
+
+    <div class="max-w-[62ch] md:pt-3">
+      <p class="text-xl leading-relaxed font-medium text-fg">{profile.bio}</p>
+
+      <div class="mt-10 border-t border-border pt-8">
+        <h3 class="display text-2xl">Off the clock</h3>
+        <ul class="mt-4 flex flex-wrap gap-2.5">
+          {
+            profile.interests.map((interest) => (
+              <li class="rounded-full border border-fg/40 px-4 py-1.5 font-medium text-fg">{interest}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
   </div>
 </section>

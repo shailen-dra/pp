@@ -1,5 +1,7 @@
+import { contact } from '../data/profile';
+
 const SUCCESS_MESSAGE = "Thanks — I'll get back to you soon.";
-const ERROR_MESSAGE = "Sorry, that didn't send. Please email me at shailendra.matat@gmail.com.";
+const ERROR_MESSAGE = `Sorry, that didn't send. Please email me at ${contact.email}.`;
 
 export async function submitContact(
   form: HTMLFormElement,
@@ -41,11 +43,14 @@ export function initContactForm(form: HTMLFormElement): void {
     button.textContent = 'Sending…';
     status.textContent = '';
     status.dataset.state = '';
+    status.setAttribute('role', 'status');
 
     const result = await submitContact(form);
 
     status.textContent = result.message;
     status.dataset.state = result.ok ? 'success' : 'error';
+    // Errors interrupt so screen-reader users learn the message was not sent.
+    status.setAttribute('role', result.ok ? 'status' : 'alert');
     if (result.ok) form.reset();
     button.disabled = false;
     button.textContent = idleLabel;

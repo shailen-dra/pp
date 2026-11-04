@@ -6,6 +6,8 @@ const PLACEHOLDER_DOMAIN = 'example.com';
 const STUB_ASSETS: Record<string, string> = {
   'public/cv.pdf': 'e754e7fe1ef8e21fa63857ac0669fab1ad19e3ded6965b79b4f1f0568ab038e8',
   'public/photo.jpg': 'fb1f4258c4addbfd9aea035c837dbb3c6a6efe9fb07c626c907384707bc1882b',
+  // og.png generated with the first name only; regenerate with scripts/generate-og.py.
+  'public/og.png': '62420560c46af72095697c5e5c5d8aba724ca3cf964e50f719f0ce1b7be485cf',
 };
 
 /** Problems if the site URL or robots.txt still use the placeholder domain. */

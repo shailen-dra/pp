@@ -13,6 +13,7 @@ const problems = [
   ...assetBlockers({
     'public/cv.pdf': readFileSync('public/cv.pdf'),
     'public/photo.jpg': readFileSync('public/photo.jpg'),
+    'public/og.png': readFileSync('public/og.png'),
   }),
 ];
 

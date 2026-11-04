@@ -32,3 +32,9 @@ describe('assetBlockers', () => {
     expect(assetBlockers({ 'public/cv.pdf': Buffer.from('real cv'), 'public/photo.jpg': Buffer.from('real photo') })).toEqual([]);
   });
 });
+
+describe('assetBlockers og image', () => {
+  it('flags the og.png generated without a full name', () => {
+    expect(assetBlockers({ 'public/og.png': readFileSync('public/og.png') })).toHaveLength(1);
+  });
+});

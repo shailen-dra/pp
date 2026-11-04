@@ -26,3 +26,30 @@ describe('findPlaceholders inside text', () => {
     expect(findPlaceholders({ name: 'Shailendra TBC_SURNAME' })).toEqual(['name']);
   });
 });
+
+describe('submitContact', () => {
+  it('returns an error naming the contact email when the key is a placeholder', async () => {
+    const { submitContact } = await import('../../src/scripts/contact-form');
+    const { contact } = await import('../../src/data/profile');
+    const form = {
+      action: 'https://api.web3forms.com/submit',
+      elements: [],
+    } as unknown as HTMLFormElement;
+    const fakeFormData = class {
+      constructor() {
+        return [['access_key', 'TBC_WEB3FORMS_KEY']][Symbol.iterator]();
+      }
+    };
+    const original = globalThis.FormData;
+    globalThis.FormData = fakeFormData as unknown as typeof FormData;
+    try {
+      const result = await submitContact(form, () => {
+        throw new Error('fetch must not be called');
+      });
+      expect(result.ok).toBe(false);
+      expect(result.message).toContain(contact.email);
+    } finally {
+      globalThis.FormData = original;
+    }
+  });
+});
