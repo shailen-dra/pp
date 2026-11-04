@@ -119,7 +119,7 @@ body {
   line-height: 0.9;
 }
 
-/* The surname, drawn as an outline in the accent colour. */
+/* Outlined display text in the accent colour (used for the 404). */
 .outline-text {
   color: transparent;
   -webkit-text-stroke: 2px var(--accent);
@@ -147,8 +147,13 @@ body {
     translate 250ms ease;
 }
 
-.outline-text .char:hover {
+/* Hover swaps colours: first-name letters turn blue, surname letters turn light. */
+.char:hover {
   color: var(--accent);
+}
+
+.surname .char:hover {
+  color: var(--fg);
 }
 
 .char:hover {

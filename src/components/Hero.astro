@@ -27,7 +27,7 @@ const tickerWords = skillGroups.flatMap((group) => group.items).filter((item) =>
       {' '}
       {
         surname && (
-          <span class="outline-text block md:pl-[18%]" aria-hidden="true">
+          <span class="surname block text-accent md:pl-[18%]" aria-hidden="true">
             {surnameChars.map((ch, i) => (
               <span class="char" style={`--i:${firstChars.length + i + 2}`}>{ch}</span>
             ))}
