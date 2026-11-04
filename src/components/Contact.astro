@@ -27,7 +27,7 @@ const field =
         Have a question or a project in mind? Send a message and I'll get back to you.
       </p>
 
-      <ul class="mt-10 border-b border-border">
+      <ul data-reveal="stagger" class="mt-10 border-b border-border">
         {
           channels.map((channel) => (
             <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-border py-4">
@@ -49,6 +49,7 @@ const field =
       id="contact-form"
       action="https://api.web3forms.com/submit"
       method="POST"
+      data-reveal
       class="self-start rounded-3xl border border-border bg-card p-6 sm:p-10"
     >
       {
@@ -87,7 +88,7 @@ const field =
 
       <button
         type="submit"
-        class="mt-7 inline-flex w-full items-center justify-center rounded-full bg-accent px-8 py-3.5 font-semibold text-accent-fg transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+        class="mt-7 inline-flex w-full items-center justify-center rounded-full bg-accent px-8 py-3.5 font-semibold text-accent-fg transition-[translate,box-shadow] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/30 disabled:cursor-wait disabled:opacity-70 sm:w-auto"
       >Send message</button>
 
       <p

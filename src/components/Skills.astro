@@ -1,11 +1,14 @@
 ---
 import { experienceLabel, skillGroups } from '../data/profile';
+
+// "10+ years" -> count up the 10, keep the rest as plain text.
+const [, years = '', yearsRest = experienceLabel] = experienceLabel.match(/^(\d+)(.*)$/) ?? [];
 ---
 
 <section id="skills" aria-labelledby="skills-heading" class="ink stack z-20">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-10">
-    <h2 id="skills-heading" data-reveal class="display text-[clamp(3rem,8.5vw,7rem)]">
-      <span class="block">{experienceLabel}.</span>
+    <h2 id="skills-heading" data-reveal="lines" class="display text-[clamp(3rem,8.5vw,7rem)]">
+      <span class="block">{years && <span data-count-up={years}>{years}</span>}{yearsRest}.</span>
       <span class="block text-accent">Shopify &amp; WordPress.</span>
       <span class="block">Built to convert.</span>
     </h2>
@@ -15,11 +18,17 @@ import { experienceLabel, skillGroups } from '../data/profile';
       the platform the store already runs on and tune it so more visitors buy.
     </p>
 
-    <ul class="mt-16 grid gap-px border-y border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+    <ul data-reveal="stagger" class="mt-16 grid gap-px border-y border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
       {
         skillGroups.map((group) => (
-          <li data-testid="skill-card" class="bg-bg py-7 sm:px-7">
-            <h3 class="display text-2xl text-accent md:text-[1.7rem]">{group.title}</h3>
+          <li data-testid="skill-card" class="group relative bg-bg py-7 sm:px-7">
+            <span
+              class="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+            <h3 class="display text-2xl text-accent transition-transform duration-300 group-hover:translate-x-1.5 md:text-[1.7rem]">
+              {group.title}
+            </h3>
             <p class="mt-2 text-muted">{group.items.join(', ')}</p>
           </li>
         ))

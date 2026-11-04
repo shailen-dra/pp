@@ -13,10 +13,10 @@ import { profile } from '../data/profile';
 
       <div class="mt-10 border-t border-border pt-8">
         <h3 class="display text-2xl">Off the clock</h3>
-        <ul class="mt-4 flex flex-wrap gap-2.5">
+        <ul data-reveal="stagger" class="mt-4 flex flex-wrap gap-2.5">
           {
             profile.interests.map((interest) => (
-              <li class="rounded-full border border-fg/40 px-4 py-1.5 font-medium text-fg">{interest}</li>
+              <li class="rounded-full border border-fg/40 px-4 py-1.5 font-medium text-fg transition-colors hover:border-accent hover:bg-accent hover:text-accent-fg">{interest}</li>
             ))
           }
         </ul>

@@ -139,37 +139,206 @@ body {
   box-shadow: 0 -24px 48px -24px rgb(0 0 0 / 0.45);
 }
 
-/* Scroll reveal: only hidden when JS runs and the visitor allows motion. */
+/* Hero letters: each one is its own box so it can rise and react to hover. */
+.char {
+  display: inline-block;
+  transition:
+    color 250ms ease,
+    translate 250ms ease;
+}
+
+.outline-text .char:hover {
+  color: var(--accent);
+}
+
+.char:hover {
+  translate: 0 -0.05em;
+}
+
+/* Journey: the accent line sits on top of the dark rule. */
+.draw-line {
+  transform-origin: left;
+}
+
+/* Scroll progress bar (only where scroll-driven animations exist). */
+.scroll-progress {
+  display: none;
+}
+
+/*
+  Motion. Everything below only runs when the visitor allows motion; hidden
+  start states additionally need html.js so content shows without JavaScript.
+  data-reveal          -> the element fades up
+  data-reveal="lines"  -> each child line rises in turn
+  data-reveal="stagger"-> each child item fades up in turn (--i set by reveal.ts)
+*/
 @media (prefers-reduced-motion: no-preference) {
-  html.js [data-reveal] {
+  html.js [data-reveal=""] {
     transition:
-      opacity 600ms ease-out,
-      transform 600ms ease-out;
+      opacity 700ms ease-out,
+      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  html.js [data-reveal]:not(.is-visible) {
+  html.js [data-reveal=""]:not(.is-visible) {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(24px);
   }
 
-  /* Hero: the name rises in once on load. */
-  .hero-rise {
-    animation: rise 900ms 100ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  html.js [data-reveal="lines"] > *,
+  html.js [data-reveal="stagger"] > * {
+    transition:
+      opacity 700ms ease-out calc(var(--i, 0) * 110ms),
+      transform 800ms cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 110ms),
+      color 200ms ease,
+      background-color 200ms ease,
+      border-color 200ms ease;
   }
 
-  .hero-rise-late {
-    animation: rise 900ms 300ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  html.js [data-reveal="lines"]:not(.is-visible) > * {
+    opacity: 0;
+    transform: translateY(0.45em) skewY(3deg);
+  }
+
+  html.js [data-reveal="stagger"]:not(.is-visible) > * {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  /* Journey: the accent rule draws across, then the number pops. */
+  html.js .draw-line {
+    transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--i, 0) * 110ms + 200ms);
+  }
+
+  html.js [data-reveal]:not(.is-visible) .draw-line {
+    transform: scaleX(0);
+  }
+
+  html.js .badge-pop {
+    transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 110ms + 700ms);
+  }
+
+  html.js [data-reveal]:not(.is-visible) .badge-pop {
+    transform: scale(0);
+  }
+
+  /* Hero: letters rise one after another, then the rest of the intro. */
+  .char {
+    animation: char-in 800ms calc(var(--i) * 45ms + 80ms) cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+
+  .hero-in {
+    animation: rise-in 800ms var(--d, 0ms) cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+
+  /* Hero glow drifts slowly; reveal.ts adds a pointer offset through translate. */
+  .hero-glow {
+    animation: drift 9s ease-in-out infinite alternate;
+    transition: translate 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .photo-tilt {
+    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  /* Skills ticker: two identical lists, shifted by one list width. */
+  .ticker {
+    animation: ticker 45s linear infinite;
+  }
+
+  .ticker:hover {
+    animation-play-state: paused;
+  }
+
+  /* Primary buttons: a light sweep on hover. */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .btn-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+    translate: -110% 0;
+    transition: translate 700ms ease;
+  }
+
+  .btn-shine:hover::after {
+    translate: 110% 0;
+  }
+
+  @supports (animation-timeline: view()) {
+    /* Each panel settles to full size as it slides up over the last one. */
+    .stack {
+      transform-origin: 50% 0;
+      animation: panel-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+
+    .scroll-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 60;
+      height: 3px;
+      background: var(--accent);
+      transform-origin: 0 50%;
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
   }
 }
 
-@keyframes rise {
+@keyframes char-in {
   from {
     opacity: 0;
-    transform: translateY(0.25em);
+    transform: translateY(0.35em) rotate(8deg);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
   }
   to {
+    transform: scale(1.15) translate(-4%, 6%);
     opacity: 1;
-    transform: none;
+  }
+}
+
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes panel-in {
+  from {
+    scale: 0.95;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 

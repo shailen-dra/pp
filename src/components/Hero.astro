@@ -1,35 +1,59 @@
 ---
 import { Image } from 'astro:assets';
-import { profile } from '../data/profile';
+import { profile, skillGroups } from '../data/profile';
 
 const [firstName, ...rest] = profile.name.split(/\s+/);
 const surname = rest.join(' ');
+const firstChars = [...firstName];
+const surnameChars = [...surname];
+
+// Ticker words: every real skill (placeholders skipped), shown twice for a seamless loop.
+const tickerWords = skillGroups.flatMap((group) => group.items).filter((item) => !item.startsWith('TBC_'));
 ---
 
-<section data-testid="hero" aria-labelledby="hero-heading" class="ink relative overflow-hidden pb-24 md:pb-32">
+<section data-testid="hero" data-hero aria-labelledby="hero-heading" class="ink relative overflow-hidden pb-20 md:pb-24">
   <div class="relative mx-auto max-w-7xl px-4 pt-10 sm:px-6 md:pt-14 lg:px-10">
     <div
-      class="pointer-events-none absolute top-[8%] right-[2%] hidden aspect-square w-[42%] rounded-full bg-[radial-gradient(closest-side,rgb(96_165_250/0.28),transparent)] md:block"
+      data-glow
+      class="hero-glow pointer-events-none absolute top-[8%] right-[2%] hidden aspect-square w-[42%] rounded-full bg-[radial-gradient(closest-side,rgb(96_165_250/0.28),transparent)] md:block"
       aria-hidden="true"
     >
     </div>
     <h1 id="hero-heading" class="display relative z-0 text-[clamp(4rem,17vw,15rem)] break-words">
-      <span class="hero-rise block text-fg">{firstName}</span>
-      {surname && <span class="hero-rise-late outline-text block md:pl-[18%]">{surname}</span>}
+      <span class="sr-only">{profile.name}</span>
+      <span class="block text-fg" aria-hidden="true">
+        {firstChars.map((ch, i) => <span class="char" style={`--i:${i}`}>{ch}</span>)}
+      </span>
+      {' '}
+      {
+        surname && (
+          <span class="outline-text block md:pl-[18%]" aria-hidden="true">
+            {surnameChars.map((ch, i) => (
+              <span class="char" style={`--i:${firstChars.length + i + 2}`}>{ch}</span>
+            ))}
+          </span>
+        )
+      }
     </h1>
 
     <div class="mt-10 md:mt-12">
       <div class="max-w-xl md:max-w-[58%] lg:max-w-xl">
         <ul data-testid="hero-roles" class="display space-y-1 text-[1.6rem] leading-tight md:text-3xl">
-          {profile.roles.map((role, i) => <li class={i === 1 ? 'text-accent' : 'text-fg'}>{role}</li>)}
+          {
+            profile.roles.map((role, i) => (
+              <li class:list={['hero-in', i === 1 ? 'text-accent' : 'text-fg']} style={`--d:${550 + i * 110}ms`}>
+                {role}
+              </li>
+            ))
+          }
         </ul>
-        <p class="mt-6 text-lg leading-relaxed text-muted">{profile.headline}</p>
+        <p class="hero-in mt-6 text-lg leading-relaxed text-muted" style="--d:900ms">{profile.headline}</p>
 
-        <div class="mt-8 flex flex-wrap gap-3">
+        <div class="hero-in mt-8 flex flex-wrap gap-3" style="--d:1000ms">
           <a
             href="#contact"
             data-testid="cta-contact"
-            class="inline-flex items-center rounded-full bg-accent px-7 py-3.5 font-semibold text-accent-fg transition-transform hover:-translate-y-0.5"
+            class="btn-shine inline-flex items-center rounded-full bg-accent px-7 py-3.5 font-semibold text-accent-fg transition-[translate,box-shadow] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/30"
           >Get in touch</a>
           <a
             href={profile.cvUrl}
@@ -47,8 +71,26 @@ const surname = rest.join(' ');
         height={800}
         loading="eager"
         fetchpriority="high"
-        class="relative z-10 mt-12 aspect-[4/5] w-56 rounded-3xl object-cover shadow-2xl shadow-black/60 sm:w-64 md:absolute md:top-[clamp(6rem,11vw,10rem)] md:right-[7%] md:mt-0 md:w-[26%] md:max-w-[21rem]"
+        data-tilt
+        class="photo-tilt relative z-10 mt-12 aspect-[4/5] w-56 rounded-3xl object-cover shadow-2xl shadow-black/60 sm:w-64 md:absolute md:top-[clamp(6rem,11vw,10rem)] md:right-[7%] md:mt-0 md:w-[26%] md:max-w-[21rem]"
       />
+    </div>
+  </div>
+
+  <div class="mt-20 overflow-hidden border-y border-border py-5 md:mt-28" aria-hidden="true">
+    <div class="ticker flex w-max">
+      {
+        [0, 1].map(() => (
+          <ul class="display flex shrink-0 items-center text-3xl md:text-5xl">
+            {tickerWords.map((word, i) => (
+              <li class="flex items-center">
+                <span class={i % 2 ? 'text-muted' : 'text-fg'}>{word}</span>
+                <span class="px-6 text-accent md:px-9">✦</span>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
     </div>
   </div>
 </section>
